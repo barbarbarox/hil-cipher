@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Simulasi dan pembelajaran interaktif algoritma kriptografi Hill Cipher — enkripsi, dekripsi, visualisasi matriks, dan penjelasan langkah demi langkah.">
+  <title>Hill Cipher Simulator — Interactive Cryptography Tool</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js" defer></script>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow--blue"></div>
+  <div class="bg-glow bg-glow--green"></div>
+
+  <div class="app">
+    <!-- ═══ HEADER ═══ -->
+    <header class="header">
+      <div class="header__icon">&#x1F512;</div>
+      <h1 class="header__title">Hill Cipher Simulator</h1>
+      <p class="header__subtitle">Interactive Cryptography Learning Tool</p>
+    </header>
+
+    <!-- ═══ TABS ═══ -->
+    <nav class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="encrypt" role="tab">
+        <span class="tab-btn__icon">&#x1F510;</span> Enkripsi
+      </button>
+      <button class="tab-btn" data-tab="decrypt" role="tab">
+        <span class="tab-btn__icon">&#x1F513;</span> Dekripsi
+      </button>
+      <button class="tab-btn" data-tab="education" role="tab">
+        <span class="tab-btn__icon">&#x1F4D6;</span> Edukasi
+      </button>
+      <button class="tab-btn" data-tab="history" role="tab">
+        <span class="tab-btn__icon">&#x1F4CB;</span> Riwayat
+      </button>
+    </nav>
+
+    <!-- ═══════════ ENCRYPT TAB ═══════════ -->
+    <section id="tab-encrypt" class="tab-content active">
+      <div class="panel-grid">
+        <!-- Input Panel -->
+        <div class="panel panel--sticky">
+          <div class="panel__title">Input Enkripsi</div>
+
+          <div class="form-group">
+            <label class="form-label">Ukuran Matriks</label>
+            <div class="matrix-size-toggle">
+              <button class="size-btn active" data-size="2" data-target="enc">2 × 2</button>
+              <button class="size-btn" data-size="3" data-target="enc">3 × 3</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Matriks Kunci (K)</label>
+            <div class="matrix-container">
+              <span class="matrix-bracket">[</span>
+              <div id="enc-matrix" class="matrix-grid size-2">
+                <input class="matrix-cell" type="number" value="3" min="0" max="25">
+                <input class="matrix-cell" type="number" value="3" min="0" max="25">
+                <input class="matrix-cell" type="number" value="2" min="0" max="25">
+                <input class="matrix-cell" type="number" value="5" min="0" max="25">
+              </div>
+              <span class="matrix-bracket">]</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Plaintext</label>
+            <input id="enc-plaintext" class="form-input" type="text" placeholder="Masukkan teks..." value="HELP" autocomplete="off" spellcheck="false">
+          </div>
+
+          <div class="btn-group">
+            <button id="btn-encrypt" class="btn btn--primary">&#x26A1; Enkripsi</button>
+          </div>
+          <div class="btn-group">
+            <button id="btn-enc-random" class="btn btn--secondary btn--small">Random Key</button>
+            <button id="btn-enc-demo" class="btn btn--secondary btn--small">Demo</button>
+            <button id="btn-enc-clear" class="btn btn--secondary btn--small">Clear</button>
+          </div>
+
+          <div id="enc-error"></div>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="panel">
+          <div class="panel__title">Proses &amp; Hasil</div>
+          <div id="enc-output" class="steps-container">
+            <div class="empty-state">
+              <div class="empty-state__icon">&#x1F4E5;</div>
+              <p class="empty-state__text">Masukkan plaintext dan kunci,<br>lalu tekan <strong>Enkripsi</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ DECRYPT TAB ═══════════ -->
+    <section id="tab-decrypt" class="tab-content">
+      <div class="panel-grid">
+        <!-- Input Panel -->
+        <div class="panel panel--sticky">
+          <div class="panel__title">Input Dekripsi</div>
+
+          <div class="form-group">
+            <label class="form-label">Ukuran Matriks</label>
+            <div class="matrix-size-toggle">
+              <button class="size-btn active" data-size="2" data-target="dec">2 × 2</button>
+              <button class="size-btn" data-size="3" data-target="dec">3 × 3</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Matriks Kunci (K)</label>
+            <div class="matrix-container">
+              <span class="matrix-bracket">[</span>
+              <div id="dec-matrix" class="matrix-grid size-2">
+                <input class="matrix-cell" type="number" value="3" min="0" max="25">
+                <input class="matrix-cell" type="number" value="3" min="0" max="25">
+                <input class="matrix-cell" type="number" value="2" min="0" max="25">
+                <input class="matrix-cell" type="number" value="5" min="0" max="25">
+              </div>
+              <span class="matrix-bracket">]</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Ciphertext</label>
+            <input id="dec-ciphertext" class="form-input" type="text" placeholder="Masukkan ciphertext..." autocomplete="off" spellcheck="false">
+          </div>
+
+          <div class="btn-group">
+            <button id="btn-decrypt" class="btn btn--success">&#x1F513; Dekripsi</button>
+          </div>
+          <div class="btn-group">
+            <button id="btn-dec-random" class="btn btn--secondary btn--small">Random Key</button>
+            <button id="btn-dec-demo" class="btn btn--secondary btn--small">Demo</button>
+            <button id="btn-dec-clear" class="btn btn--secondary btn--small">Clear</button>
+          </div>
+
+          <div id="dec-error"></div>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="panel">
+          <div class="panel__title">Proses &amp; Hasil</div>
+          <div id="dec-output" class="steps-container">
+            <div class="empty-state">
+              <div class="empty-state__icon">&#x1F510;</div>
+              <p class="empty-state__text">Masukkan ciphertext dan kunci,<br>lalu tekan <strong>Dekripsi</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ EDUCATION TAB ═══════════ -->
+    <section id="tab-education" class="tab-content">
+      <div class="panel">
+        <div class="panel__title">Materi Pembelajaran Hill Cipher</div>
+
+        <div class="edu-section">
+          <h2 class="edu-section__title">Apa itu Hill Cipher?</h2>
+          <p class="edu-text"><strong>Hill Cipher</strong> adalah algoritma kriptografi klasik yang ditemukan oleh <strong>Lester S. Hill</strong> pada tahun 1929. Algoritma ini menggunakan <strong>aljabar linier</strong> (operasi matriks) untuk mengenkripsi dan mendekripsi pesan.</p>
+          <p class="edu-text">Berbeda dengan cipher substitusi sederhana yang mengganti satu huruf dengan satu huruf lain, Hill Cipher mengenkripsi <strong>beberapa huruf sekaligus</strong> (dalam blok), sehingga lebih tahan terhadap analisis frekuensi.</p>
+        </div>
+
+        <hr class="divider">
+
+        <div class="edu-section">
+          <h2 class="edu-section__title">Cara Kerja Hill Cipher</h2>
+          <ul class="edu-list">
+            <li>Setiap huruf dikonversi menjadi angka: A=0, B=1, C=2, ..., Z=25</li>
+            <li>Plaintext dibagi menjadi blok-blok berukuran n (sesuai ukuran matriks kunci)</li>
+            <li>Setiap blok dikalikan dengan matriks kunci</li>
+            <li>Hasil perkalian di-modulo 26</li>
+            <li>Angka hasil dikonversi kembali menjadi huruf</li>
+          </ul>
+        </div>
+
+        <hr class="divider">
+
+        <div class="edu-section">
+          <h2 class="edu-section__title">Rumus Enkripsi</h2>
+          <div class="formula">C = K × P mod 26</div>
+          <p class="edu-text">Di mana: <strong>C</strong> = vektor ciphertext, <strong>K</strong> = matriks kunci (n×n), <strong>P</strong> = vektor plaintext, <strong>mod 26</strong> = operasi modulo 26 (karena ada 26 huruf alfabet).</p>
+        </div>
+
+        <hr class="divider">
+
+        <div class="edu-section">
+          <h2 class="edu-section__title">Rumus Dekripsi</h2>
+          <div class="formula">P = K⁻¹ × C mod 26</div>
+          <p class="edu-text">Untuk mendekripsi, kita membutuhkan <strong>matriks invers</strong> dari kunci K dalam modulo 26.</p>
+        </div>
+
+        <hr class="divider">
+
+        <div class="edu-section">
+          <h2 class="edu-section__title">Konsep Modulo 26</h2>
+          <p class="edu-text">Operasi <strong>modulo</strong> menghasilkan sisa pembagian. Karena alfabet memiliki 26 huruf (A–Z), semua operasi aritmatika dilakukan dalam <strong>modulo 26</strong>.</p>
+          <p class="edu-text">Contoh: 33 mod 26 = 7 (karena 33 = 1×26 + 7), yang setara dengan huruf <strong>H</strong>.</p>
+        </div>
+
+        <hr class="divider">
+
+        <div class="edu-section">
+          <h2 class="edu-section__title">Determinan Matriks</h2>
+          <div class="formula">det(K) = ad − bc &nbsp; (untuk matriks 2×2)</div>
+          <p class="edu-text">Untuk matriks 2×2 <span class="text-mono">[[a, b], [c, d]]</span>, determinan dihitung dengan rumus <strong>ad − bc</strong>.</p>
+          <p class="edu-text">Determinan harus <strong>tidak nol</strong> dan <strong>relatif prima dengan 26</strong> (GCD = 1) agar matriks memiliki invers modulo 26.</p>
+        </div>
+
+        <hr class="divider">
+
+        <div class="edu-section">
+          <h2 class="edu-section__title">Invers Matriks Modulo 26</h2>
+          <div class="formula">K⁻¹ = det(K)⁻¹ × adj(K) mod 26</div>
+          <p class="edu-text">Langkah menghitung invers matriks mod 26:</p>
+          <ul class="edu-list">
+            <li><strong>Hitung determinan</strong> matriks dan lakukan mod 26</li>
+            <li><strong>Cari invers modular</strong> dari determinan: temukan x sehingga det × x ≡ 1 (mod 26)</li>
+            <li><strong>Hitung matriks adjoin</strong> (transpose dari matriks kofaktor)</li>
+            <li><strong>Kalikan</strong> invers determinan dengan matriks adjoin, mod 26</li>
+          </ul>
+        </div>
+
+        <hr class="divider">
+
+        <div class="edu-section">
+          <h2 class="edu-section__title">Mengapa Determinan Harus Relatif Prima dengan 26?</h2>
+          <p class="edu-text">Agar dekripsi dapat dilakukan, kita membutuhkan <strong>invers modular</strong> dari determinan. Invers modular dari <em>a</em> modulo <em>m</em> hanya ada jika <strong>GCD(a, m) = 1</strong> (a dan m relatif prima).</p>
+          <p class="edu-text">Nilai-nilai yang <strong>tidak bisa</strong> menjadi determinan mod 26 yang valid: 0, 2, 4, 6, 8, 10, 12, 13, 14, 16, 18, 20, 22, 24 (karena memiliki faktor bersama dengan 26 = 2 × 13).</p>
+          <p class="edu-text">Nilai determinan mod 26 yang <strong>valid</strong>: 1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25.</p>
+        </div>
+
+        <hr class="divider">
+
+        <div class="edu-section">
+          <h2 class="edu-section__title">Coba Sendiri!</h2>
+          <p class="edu-text">Gunakan tab <strong>Enkripsi</strong> dan <strong>Dekripsi</strong> untuk mencoba Hill Cipher secara interaktif. Klik tombol <strong>Demo</strong> untuk melihat contoh lengkap dengan kunci [[3,3],[2,5]] dan plaintext "HELP".</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ HISTORY TAB ═══════════ -->
+    <section id="tab-history" class="tab-content">
+      <div class="panel">
+        <div class="panel__title">Riwayat Operasi</div>
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+          <button id="btn-export-all-txt" class="btn btn--secondary btn--small">Export Semua (TXT)</button>
+          <button id="btn-export-all-pdf" class="btn btn--secondary btn--small">Export Semua (PDF)</button>
+          <button id="btn-clear-history" class="btn btn--danger btn--small" style="margin-left:auto;">Hapus Semua</button>
+        </div>
+        <div id="history-list" class="history-list">
+          <div class="empty-state">
+            <div class="empty-state__icon">&#x1F4CB;</div>
+            <p class="empty-state__text">Belum ada riwayat operasi</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/hill-cipher.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

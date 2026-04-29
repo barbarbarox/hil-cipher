@@ -1,0 +1,6 @@
+{
+  "name": "hill-cipher-simulator",
+  "version": "1.0.0",
+  "description": "Interactive Hill Cipher cryptography learning tool",
+  "private": true
+}
